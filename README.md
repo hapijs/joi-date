@@ -24,7 +24,7 @@ Usage is a two steps process. First, a schema is constructed using the provided 
 
 ```js
 const BaseJoi = require('joi');
-const Extension = require(joi-date-extensions);
+const Extension = require('joi-date-extensions');
 const Joi = BaseJoi.extend(Extension);
 
 const schema = Joi.date().format('YYYY-MM-DD');
