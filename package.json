@@ -1,7 +1,7 @@
 {
   "name": "joi-date-extensions",
   "description": "Joi extension for dates",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage": "https://github.com/hapijs/joi-date-extensions",
   "repository": "git://github.com/hapijs/joi-date-extensions",
   "main": "lib/index.js",
