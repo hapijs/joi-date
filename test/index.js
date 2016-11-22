@@ -27,6 +27,16 @@ describe('date', () => {
 
     describe('format()', () => {
 
+        it('validates an empty date', (done) => {
+
+            const schema = Joi.date().format('YYYY-MM-DD');
+            schema.validate(undefined, (err, value) => {
+
+                expect(err).to.not.exist();
+                done();
+            });
+        });
+
         it('still validates a date', (done) => {
 
             const now = Date.now();
@@ -37,7 +47,6 @@ describe('date', () => {
                 [date, true],
                 [new Date(NaN), false, null, '"value" must be a number of milliseconds or valid date string']
             ], done);
-
         });
 
         it('validates custom format', (done) => {
