@@ -20,6 +20,9 @@
     "hoek": "4.x.x",
     "moment": "2.x.x"
   },
+  "peerDependencies": {
+    "joi": ">=10.x.x"
+  },
   "devDependencies": {
     "code": "4.x.x",
     "joi": "10.x.x",
