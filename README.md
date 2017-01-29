@@ -31,4 +31,4 @@ const schema = Joi.date().format('YYYY-MM-DD');
 ```
 
 # API
-See the [API Reference](https://github.com/hapijs/joi-date-extensions/blob/v1.0.1/API.md).
+See the [API Reference](https://github.com/hapijs/joi-date-extensions/blob/v1.0.2/API.md).
