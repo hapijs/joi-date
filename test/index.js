@@ -53,7 +53,7 @@ describe('date', () => {
 
             Helper.validate(Joi.date().format('DD#YYYY$MM'), [
                 ['07#2013$06', true],
-                ['2013-06-07', false, null, '"value" must be a string with one of the following formats DD#YYYY$MM']
+                ['2013-06-07', false, null, '"value" must be a string with one of the following formats [DD#YYYY$MM]']
             ], done);
         });
 
