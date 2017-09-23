@@ -3,7 +3,6 @@
 // Load modules
 
 const Lab = require('lab');
-const Code = require('code');
 const Helper = require('./helper');
 const BaseJoi = require('joi');
 const Extension = require('../');
@@ -20,7 +19,7 @@ const internals = {};
 const lab = exports.lab = Lab.script();
 const describe = lab.describe;
 const it = lab.it;
-const expect = Code.expect;
+const expect = lab.expect;
 
 
 describe('date', () => {

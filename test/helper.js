@@ -2,7 +2,7 @@
 
 // Load modules
 
-const Code = require('code');
+const expect = require('lab').expect;
 const Joi = require('joi');
 
 
@@ -12,8 +12,6 @@ const internals = {};
 
 
 // Test shortcuts
-
-const expect = Code.expect;
 
 
 exports.validate = function (schema, config, callback) {
