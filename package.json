@@ -21,7 +21,7 @@
     "moment": "2.x.x"
   },
   "peerDependencies": {
-    "joi": ">=10.x.x"
+    "joi": ">=10.3.0"
   },
   "devDependencies": {
     "hapitoc": "1.x.x",
