@@ -1,10 +1,13 @@
 .c9
 .idea
+.vscode
 .project
 *.iml
 npm-debug.log
 dump.rdb
 node_modules
+yarn.lock
+yarn-error.log
 results.tap
 results.xml
 npm-shrinkwrap.json
