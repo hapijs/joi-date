@@ -64,6 +64,13 @@ describe('date', () => {
             ], done);
         });
 
+        it('supports utc mode', (done) => {
+
+            Helper.validate(Joi.date().utc().format('YYYY-MM-DD'), [
+                ['2018-01-01', true, null, new Date('2018-01-01:00:00:00.000Z')]
+            ], done);
+        });
+
         it('fails with bad formats', (done) => {
 
             expect(() => {
@@ -88,7 +95,7 @@ describe('date', () => {
             });
         });
 
-        it('should be correctly described', (done) => {
+        it('should be correctly described (local mode)', (done) => {
 
             const schema = Joi.date().format(['DD#YYYY$MM', 'YY|DD|MM']);
             expect(schema.describe()).to.equal({
@@ -104,6 +111,43 @@ describe('date', () => {
                     }
                 },
                 rules: [
+                    {
+                        name: 'format',
+                        description: 'Date should respect format DD#YYYY$MM,YY|DD|MM',
+                        arg: {
+                            format: [
+                                'DD#YYYY$MM',
+                                'YY|DD|MM'
+                            ]
+                        }
+                    }
+                ]
+            });
+            done();
+        });
+
+        it('should be correctly described (utc mode)', (done) => {
+
+            const schema = Joi.date().utc().format(['DD#YYYY$MM', 'YY|DD|MM']);
+            expect(schema.describe()).to.equal({
+                type: 'date',
+                flags: {
+                    utc: true,
+                    momentFormat: ['DD#YYYY$MM', 'YY|DD|MM']
+                },
+                options: {
+                    language: {
+                        date: {
+                            format: 'must be a string with one of the following formats {{format}}'
+                        }
+                    }
+                },
+                rules: [
+                    {
+                        name: 'utc',
+                        description: 'Date should be interpreted in UTC',
+                        arg: {}
+                    },
                     {
                         name: 'format',
                         description: 'Date should respect format DD#YYYY$MM,YY|DD|MM',
