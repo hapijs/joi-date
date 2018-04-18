@@ -1,11 +1,12 @@
 <!-- version -->
-# 1.1.1 API Reference
+# 1.2.0 API Reference
 <!-- versionstop -->
 
 <!-- toc -->
 
 - [Rules](#rules)
   - [`date.format(format)`](#dateformatformat)
+  - [`date.utc()`](#dateutc)
 
 <!-- tocstop -->
 
