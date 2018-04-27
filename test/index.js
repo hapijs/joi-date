@@ -95,6 +95,15 @@ describe('date', () => {
             });
         });
 
+        it('fails with overflow dates', (done) => {
+
+            Helper.validate(Joi.date().format('YYYY-MM-DD'), [
+                ['1999-02-31', false, null, '"value" must be a string with one of the following formats [YYYY-MM-DD]'],
+                ['2005-13-01', false, null, '"value" must be a string with one of the following formats [YYYY-MM-DD]'],
+                ['2010-01-32', false, null, '"value" must be a string with one of the following formats [YYYY-MM-DD]']
+            ], done);
+        });
+
         it('should be correctly described (local mode)', (done) => {
 
             const schema = Joi.date().format(['DD#YYYY$MM', 'YY|DD|MM']);
