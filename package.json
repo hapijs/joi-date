@@ -17,7 +17,7 @@
     "node": ">=4.0.0"
   },
   "dependencies": {
-    "moment": "2.x.x"
+    "moment": "^2.22.2"
   },
   "peerDependencies": {
     "joi": ">=10.3.0"
@@ -28,7 +28,7 @@
     "lab": "14.x.x"
   },
   "scripts": {
-    "test": "lab -t 100 -a code -L -I 'URL,URLSearchParams'",
+    "test": "lab -t 100 -a code -L -I 'URL,URLSearchParams,BigUint64Array,BigInt64Array,BigInt'",
     "test-debug": "node $NODE_DEBUG_OPTION ./node_modules/.bin/lab -a code",
     "test-cov-html": "lab -r html -o coverage.html -a code",
     "toc": "hapitoc",
