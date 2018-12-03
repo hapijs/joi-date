@@ -171,5 +171,16 @@ describe('date', () => {
             });
             done();
         });
+
+        it('should support .allow()', (done) => {
+
+            const schema = Joi.date().format('YYYY-MM-DD').allow('epoch');
+            schema.validate('epoch', (err, value) => {
+
+                expect(err).to.not.exist();
+                expect(value).to.equal('epoch');
+                done();
+            });
+        });
     });
 });
