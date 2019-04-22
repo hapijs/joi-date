@@ -1,10 +1,17 @@
 {
   "name": "@hapi/joi-date",
   "description": "Joi extension for dates",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "repository": "git://github.com/hapijs/joi-date",
   "main": "lib/index.js",
-  "keywords": ["schema", "validation", "date", "moment", "joi", "extension"],
+  "keywords": [
+    "schema",
+    "validation",
+    "date",
+    "moment",
+    "joi",
+    "extension"
+  ],
   "dependencies": {
     "moment": "2.x.x"
   },
