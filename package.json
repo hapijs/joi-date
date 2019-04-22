@@ -1,38 +1,21 @@
 {
-  "name": "joi-date-extensions",
+  "name": "@hapi/joi-date",
   "description": "Joi extension for dates",
   "version": "1.2.0",
-  "homepage": "https://github.com/hapijs/joi-date-extensions",
-  "repository": "git://github.com/hapijs/joi-date-extensions",
+  "repository": "git://github.com/hapijs/joi-date",
   "main": "lib/index.js",
-  "keywords": [
-    "schema",
-    "validation",
-    "date",
-    "moment",
-    "joi",
-    "extension"
-  ],
-  "engines": {
-    "node": ">=4.0.0"
-  },
+  "keywords": ["schema", "validation", "date", "moment", "joi", "extension"],
   "dependencies": {
-    "moment": "^2.22.2"
-  },
-  "peerDependencies": {
-    "joi": ">=10.3.0"
+    "moment": "2.x.x"
   },
   "devDependencies": {
-    "hapitoc": "1.x.x",
-    "joi": "11.x.x",
-    "lab": "14.x.x"
+    "@hapi/code": "5.x.x",
+    "@hapi/joi": "15.x.x",
+    "@hapi/lab": "18.x.x"
   },
   "scripts": {
-    "test": "lab -t 100 -a code -L -I 'URL,URLSearchParams,BigUint64Array,BigInt64Array,BigInt,TextEncoder,TextDecoder,queueMicrotask'",
-    "test-debug": "node $NODE_DEBUG_OPTION ./node_modules/.bin/lab -a code",
-    "test-cov-html": "lab -r html -o coverage.html -a code",
-    "toc": "hapitoc",
-    "version": "npm run toc && git add API.md README.md"
+    "test": "lab -t 100 -a @hapi/code -L",
+    "test-cov-html": "lab -r html -o coverage.html -a @hapi/code"
   },
   "license": "BSD-3-Clause"
 }

@@ -1,26 +1,22 @@
 'use strict';
 
-// Load modules
+const Code = require('@hapi/code');
+const Joi = require('@hapi/joi');
 
-const expect = require('lab').expect;
-const Joi = require('joi');
-
-
-// Declare internals
 
 const internals = {};
 
 
-// Test shortcuts
+const expect = Code.expect;
 
 
-exports.validate = function (schema, config, callback) {
+exports.validate = function (schema, config) {
 
-    return exports.validateOptions(schema, config, null, callback);
+    return exports.validateOptions(schema, config);
 };
 
 
-exports.validateOptions = function (schema, config, options, callback) {
+exports.validateOptions = function (schema, config, options) {
 
     try {
         const compiled = Joi.compile(schema);
@@ -35,6 +31,7 @@ exports.validateOptions = function (schema, config, options, callback) {
             if (!shouldValidate) {
                 expect(expectedValueOrError, 'Failing tests messages must be tested').to.exist();
             }
+
             const result = Joi.validate(input, compiled, validationOptions || options);
 
             const err = result.error;
@@ -71,10 +68,6 @@ exports.validateOptions = function (schema, config, options, callback) {
         // Reframe the error location, we don't care about the helper
         err.at = internals.thrownAt();
         throw err;
-    }
-
-    if (callback) {
-        callback();
     }
 };
 
