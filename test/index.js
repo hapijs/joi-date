@@ -114,13 +114,6 @@ describe('date', () => {
                 flags: {
                     momentFormat: ['DD#YYYY$MM', 'YY|DD|MM']
                 },
-                options: {
-                    language: {
-                        date: {
-                            format: 'must be a string with one of the following formats {{format}}'
-                        }
-                    }
-                },
                 rules: [
                     {
                         name: 'format',
@@ -144,13 +137,6 @@ describe('date', () => {
                 flags: {
                     utc: true,
                     momentFormat: ['DD#YYYY$MM', 'YY|DD|MM']
-                },
-                options: {
-                    language: {
-                        date: {
-                            format: 'must be a string with one of the following formats {{format}}'
-                        }
-                    }
                 },
                 rules: [
                     {
