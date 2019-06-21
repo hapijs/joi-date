@@ -171,5 +171,17 @@ describe('date', () => {
                 ]
             });
         });
+
+        it('does not error with allowed value null', async () => {
+
+            const schema = Joi.date().format('YYYY-MM-DD').allow(null);
+            await expect(schema.validate(null)).to.not.reject();
+        });
+
+        it('does not error with allowed value \'null\'', async () => {
+
+            const schema = Joi.date().format('YYYY-MM-DD').allow('null');
+            await expect(schema.validate('null')).to.not.reject();
+        });
     });
 });
