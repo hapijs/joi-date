@@ -1,13 +1,11 @@
 'use strict';
 
-const BaseJoi = require('@hapi/joi');
 const Code = require('@hapi/code');
-const DateExtension = require('..');
+const Joi = require('@hapi/joi');
+const JoiDate = require('..');
 const Lab = require('@hapi/lab');
 
 const Helper = require('./helper');
-
-const Joi = BaseJoi.extend(DateExtension);
 
 
 const internals = {};
@@ -19,142 +17,216 @@ const expect = Code.expect;
 
 describe('date', () => {
 
+    const custom = Joi.extend(JoiDate);
+
     describe('format()', () => {
 
-        it('validates an empty date', async () => {
+        it('validates an empty date', () => {
 
-            const schema = Joi.date().format('YYYY-MM-DD');
-            await expect(schema.validate(undefined)).to.not.reject();
+            const schema = custom.date().format('YYYY-MM-DD');
+            expect(schema.validate(undefined).error).to.not.exist();
         });
 
-        it('still validates a date', () => {
+        it('validates date', () => {
 
             const now = Date.now();
             const date = new Date();
 
-            Helper.validate(Joi.date().format('YYYY-MM-DD'), [
+            Helper.validate(custom.date(), [
                 [now, true],
                 [date, true],
-                [new Date(NaN), false, null, '"value" must be a number of milliseconds or valid date string']
+                ['xxx', false, null, {
+                    message: '"value" must be a valid date',
+                    details: [{
+                        message: '"value" must be a valid date',
+                        path: [],
+                        type: 'date.base',
+                        context: { value: 'xxx', label: 'value' }
+                    }]
+                }]
             ]);
 
-            Helper.validate(Joi.date(), [
+            Helper.validate(custom.date().format('YYYY-MM-DD'), [
                 [now, true],
-                [date, true]
+                [date, true],
+                [new Date(NaN), false, null, {
+                    message: '"value" must be a valid date',
+                    details: [{
+                        message: '"value" must be a valid date',
+                        path: [],
+                        type: 'date.base',
+                        context: { value: new Date(NaN), label: 'value' }
+                    }]
+                }],
+                ['xxx', false, null, {
+                    message: '"value" must be in YYYY-MM-DD format',
+                    details: [{
+                        message: '"value" must be in YYYY-MM-DD format',
+                        path: [],
+                        type: 'date.format',
+                        context: { value: 'xxx', label: 'value', format: 'YYYY-MM-DD' }
+                    }]
+                }]
+            ]);
+        });
+
+        it('validates base formats', () => {
+
+            Helper.validate(custom.date().format('iso'), [
+                ['+002013-06-07T14:21:46.295Z', true],
+                ['-002013-06-07T14:21:46.295Z', true],
+                ['002013-06-07T14:21:46.295Z', false, null, {
+                    message: '"value" must be in ISO 8601 date format',
+                    details: [{
+                        message: '"value" must be in ISO 8601 date format',
+                        path: [],
+                        type: 'date.format',
+                        context: { label: 'value', value: '002013-06-07T14:21:46.295Z', format: 'iso' }
+                    }]
+                }]
             ]);
         });
 
         it('errors without convert enabled', () => {
 
-            Helper.validate(Joi.date().format('YYYY-MM-DD').options({ convert: false }), [
-                ['2000-01-01', false, null, '"value" must be a valid date']
+            Helper.validate(custom.date().format('YYYY-MM-DD').options({ convert: false }), [
+                ['2000-01-01', false, null, {
+                    message: '"value" must be a valid date',
+                    details: [{
+                        message: '"value" must be a valid date',
+                        path: [],
+                        type: 'date.base',
+                        context: { value: '2000-01-01', label: 'value' }
+                    }]
+                }]
             ]);
 
-            Helper.validate(Joi.date().options({ convert: false }), [
-                ['2000-01-01', false, null, '"value" must be a valid date']
+            Helper.validate(custom.date().options({ convert: false }), [
+                ['2000-01-01', false, null, {
+                    message: '"value" must be a valid date',
+                    details: [{
+                        message: '"value" must be a valid date',
+                        path: [],
+                        type: 'date.base',
+                        context: { value: '2000-01-01', label: 'value' }
+                    }]
+                }]
             ]);
         });
 
         it('validates custom format', () => {
 
-            Helper.validate(Joi.date().format('DD#YYYY$MM'), [
+            Helper.validate(custom.date().format('DD#YYYY$MM'), [
                 ['07#2013$06', true],
-                ['2013-06-07', false, null, '"value" must be a string with one of the following formats [DD#YYYY$MM]']
+                ['2013-06-07', false, null, {
+                    message: '"value" must be in DD#YYYY$MM format',
+                    details: [{
+                        message: '"value" must be in DD#YYYY$MM format',
+                        path: [],
+                        type: 'date.format',
+                        context: { value: '2013-06-07', label: 'value', format: 'DD#YYYY$MM' }
+                    }]
+                }]
             ]);
         });
 
         it('validates several custom formats', () => {
 
-            Helper.validate(Joi.date().format(['DD#YYYY$MM', 'YY|DD|MM']), [
+            Helper.validate(custom.date().format(['DD#YYYY$MM', 'YY|DD|MM']), [
                 ['13|07|06', true],
-                ['2013-06-07', false, null, '"value" must be a string with one of the following formats [DD#YYYY$MM, YY|DD|MM]']
+                ['2013-06-07', false, null, {
+                    message: '"value" must be in [DD#YYYY$MM, YY|DD|MM] format',
+                    details: [{
+                        message: '"value" must be in [DD#YYYY$MM, YY|DD|MM] format',
+                        path: [],
+                        type: 'date.format',
+                        context: { value: '2013-06-07', label: 'value', format: ['DD#YYYY$MM', 'YY|DD|MM'] }
+                    }]
+                }]
             ]);
         });
 
         it('supports utc mode', () => {
 
-            Helper.validate(Joi.date().utc().format('YYYY-MM-DD'), [
+            Helper.validate(custom.date().utc().format('YYYY-MM-DD'), [
                 ['2018-01-01', true, null, new Date('2018-01-01:00:00:00.000Z')]
             ]);
         });
 
         it('fails with bad formats', () => {
 
-            expect(() => {
-
-                Joi.date().format(true);
-            }).to.throw(/must be a string/);
-
-            expect(() => {
-
-                Joi.date().format(['YYYYMMDD', true]);
-            }).to.throw(/must be a string/);
+            expect(() => custom.date().format(true)).to.throw('Invalid format "value" must be one of [string, array]');
+            expect(() => custom.date().format([true])).to.throw('Invalid format "value" does not match any of the allowed types');
         });
 
-        it('fails without convert', async () => {
+        it('fails without convert', () => {
 
-            const schema = Joi.date().format('YYYY-MM-DD');
-            await expect(schema.validate('foo', { convert: false })).to.reject('"value" must be a valid date');
+            const schema = custom.date().format('YYYY-MM-DD');
+            expect(schema.validate('foo', { convert: false }).error).to.be.an.error('"value" must be a valid date');
         });
 
         it('fails with overflow dates', () => {
 
-            Helper.validate(Joi.date().format('YYYY-MM-DD'), [
-                ['1999-02-31', false, null, '"value" must be a string with one of the following formats [YYYY-MM-DD]'],
-                ['2005-13-01', false, null, '"value" must be a string with one of the following formats [YYYY-MM-DD]'],
-                ['2010-01-32', false, null, '"value" must be a string with one of the following formats [YYYY-MM-DD]']
+            Helper.validate(custom.date().format('YYYY-MM-DD'), [
+                ['1999-02-31', false, null, {
+                    message: '"value" must be in YYYY-MM-DD format',
+                    details: [{
+                        message: '"value" must be in YYYY-MM-DD format',
+                        path: [],
+                        type: 'date.format',
+                        context: { value: '1999-02-31', label: 'value', format: 'YYYY-MM-DD' }
+                    }]
+                }],
+                ['2005-13-01', false, null, {
+                    message: '"value" must be in YYYY-MM-DD format',
+                    details: [{
+                        message: '"value" must be in YYYY-MM-DD format',
+                        path: [],
+                        type: 'date.format',
+                        context: { value: '2005-13-01', label: 'value', format: 'YYYY-MM-DD' }
+                    }]
+                }],
+                ['2010-01-32', false, null, {
+                    message: '"value" must be in YYYY-MM-DD format',
+                    details: [{
+                        message: '"value" must be in YYYY-MM-DD format',
+                        path: [],
+                        type: 'date.format',
+                        context: { value: '2010-01-32', label: 'value', format: 'YYYY-MM-DD' }
+                    }]
+                }]
             ]);
         });
 
-        it('should be correctly described (local mode)', () => {
+        it('should support .allow()', () => {
 
-            const schema = Joi.date().format(['DD#YYYY$MM', 'YY|DD|MM']);
-            expect(schema.describe()).to.equal({
-                type: 'date',
-                flags: {
-                    momentFormat: ['DD#YYYY$MM', 'YY|DD|MM']
-                },
-                rules: [
-                    {
-                        name: 'format',
-                        description: 'Date should respect format DD#YYYY$MM,YY|DD|MM',
-                        arg: {
-                            format: [
-                                'DD#YYYY$MM',
-                                'YY|DD|MM'
-                            ]
-                        }
-                    }
-                ]
-            });
+            const schema = custom.date().format('YYYY-MM-DD').allow('epoch');
+            expect(schema.validate('epoch')).to.equal({ value: 'epoch' });
         });
 
-        it('should be correctly described (utc mode)', () => {
+        describe('describe()', () => {
 
-            const schema = Joi.date().utc().format(['DD#YYYY$MM', 'YY|DD|MM']);
-            expect(schema.describe()).to.equal({
-                type: 'date',
-                flags: {
-                    utc: true,
-                    momentFormat: ['DD#YYYY$MM', 'YY|DD|MM']
-                },
-                rules: [
-                    {
-                        name: 'utc',
-                        description: 'Date should be interpreted in UTC',
-                        arg: {}
-                    },
-                    {
-                        name: 'format',
-                        description: 'Date should respect format DD#YYYY$MM,YY|DD|MM',
-                        arg: {
-                            format: [
-                                'DD#YYYY$MM',
-                                'YY|DD|MM'
-                            ]
-                        }
+            it('describes custom formats', () => {
+
+                const schema = custom.date().format(['DD#YYYY$MM', 'YY|DD|MM']);
+                expect(schema.describe()).to.equal({
+                    type: 'date',
+                    flags: {
+                        format: ['DD#YYYY$MM', 'YY|DD|MM']
                     }
-                ]
+                });
+            });
+
+            it('describes utc mode', () => {
+
+                const schema = custom.date().utc().format(['DD#YYYY$MM', 'YY|DD|MM']);
+                expect(schema.describe()).to.equal({
+                    type: 'date',
+                    flags: {
+                        format: ['DD#YYYY$MM', 'YY|DD|MM'],
+                        utc: true
+                    }
+                });
             });
         });
     });

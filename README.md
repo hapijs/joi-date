@@ -1,22 +1,24 @@
-<a href="http://hapijs.com"><img src="https://raw.githubusercontent.com/hapijs/assets/master/images/family.png" width="180px" align="right" /></a>
+<a href="https://hapi.dev"><img src="https://raw.githubusercontent.com/hapijs/assets/master/images/family.png" width="180px" align="right" /></a>
 
 # joi-date
 
-Joi extensions for extra date rules.
+Extensions for advance date rules.
 
 [![Build Status](https://secure.travis-ci.org/hapijs/joi-date.svg?branch=master)](http://travis-ci.org/hapijs/joi-date)
 
+# Compatibility
+
+This version requires **joi** v16 or newer. For previous versions of **joi** use version 1.x of this module.
+
 # Usage
 
-Usage is a two steps process. First, a schema is constructed using the provided types and constraints:
-
 ```js
-const BaseJoi = require('@hapi/joi');
-const Extension = require('@hapi/joi-date');
-const Joi = BaseJoi.extend(Extension);
+const Joi = require('@hapi/joi')
+    .extend(require('@hapi/joi-date'));
 
-const schema = Joi.date().format('YYYY-MM-DD');
+const schema = Joi.date().format('YYYY-MM-DD').utc();
 ```
 
 # API
-See the [API Reference](https://github.com/hapijs/joi-date/blob/v1.3.0/API.md).
+
+See the [API Reference](https://github.com/hapijs/joi-date/blob/master/API.md).

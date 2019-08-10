@@ -16,9 +16,9 @@
     "moment": "2.x.x"
   },
   "devDependencies": {
-    "@hapi/code": "5.x.x",
-    "@hapi/joi": "15.x.x",
-    "@hapi/lab": "18.x.x"
+    "@hapi/code": "6.x.x",
+    "@hapi/joi": "16.0.0-preview",
+    "@hapi/lab": "20.x.x"
   },
   "scripts": {
     "test": "lab -t 100 -a @hapi/code -L",
