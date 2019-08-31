@@ -156,7 +156,7 @@ describe('date', () => {
         it('fails with bad formats', () => {
 
             expect(() => custom.date().format(true)).to.throw('Invalid format "value" must be one of [string, array]');
-            expect(() => custom.date().format([true])).to.throw('Invalid format "value" does not match any of the allowed types');
+            expect(() => custom.date().format([true])).to.throw('Invalid format "[0]" must be a string');
         });
 
         it('fails without convert', () => {
