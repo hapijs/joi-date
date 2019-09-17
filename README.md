@@ -1,6 +1,6 @@
 <a href="https://hapi.dev"><img src="https://raw.githubusercontent.com/hapijs/assets/master/images/family.png" width="180px" align="right" /></a>
 
-# joi-date
+# @hapi/joi-date
 
 Extensions for advance date rules.
 
