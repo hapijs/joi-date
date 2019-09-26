@@ -1,14 +1,3 @@
-<!-- version -->
-# 1.3.0 API Reference
-<!-- versionstop -->
-
-<!-- toc -->
-
-- [Rules](#rules)
-  - [`date.format(format)`](#dateformatformat)
-  - [`date.utc()`](#dateutc)
-
-<!-- tocstop -->
 
 # Rules
 
