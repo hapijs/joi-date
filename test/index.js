@@ -4,6 +4,7 @@ const Code = require('@hapi/code');
 const Joi = require('@hapi/joi');
 const JoiDate = require('..');
 const Lab = require('@hapi/lab');
+const Moment = require('moment');
 
 const Helper = require('./helper');
 
@@ -33,39 +34,30 @@ describe('date', () => {
             const date = new Date();
 
             Helper.validate(custom.date(), [
-                [now, true],
+                [now, true, new Date(now)],
                 [date, true],
-                ['xxx', false, null, {
+                ['xxx', false, {
                     message: '"value" must be a valid date',
-                    details: [{
-                        message: '"value" must be a valid date',
-                        path: [],
-                        type: 'date.base',
-                        context: { value: 'xxx', label: 'value' }
-                    }]
+                    path: [],
+                    type: 'date.base',
+                    context: { value: 'xxx', label: 'value' }
                 }]
             ]);
 
             Helper.validate(custom.date().format('YYYY-MM-DD'), [
-                [now, true],
+                [now, true, new Date(now)],
                 [date, true],
-                [new Date(NaN), false, null, {
+                [new Date(NaN), false, {
                     message: '"value" must be a valid date',
-                    details: [{
-                        message: '"value" must be a valid date',
-                        path: [],
-                        type: 'date.base',
-                        context: { value: new Date(NaN), label: 'value' }
-                    }]
+                    path: [],
+                    type: 'date.base',
+                    context: { value: new Date(NaN), label: 'value' }
                 }],
-                ['xxx', false, null, {
+                ['xxx', false, {
                     message: '"value" must be in YYYY-MM-DD format',
-                    details: [{
-                        message: '"value" must be in YYYY-MM-DD format',
-                        path: [],
-                        type: 'date.format',
-                        context: { value: 'xxx', label: 'value', format: 'YYYY-MM-DD' }
-                    }]
+                    path: [],
+                    type: 'date.format',
+                    context: { value: 'xxx', label: 'value', format: 'YYYY-MM-DD' }
                 }]
             ]);
         });
@@ -73,16 +65,13 @@ describe('date', () => {
         it('validates base formats', () => {
 
             Helper.validate(custom.date().format('iso'), [
-                ['+002013-06-07T14:21:46.295Z', true],
-                ['-002013-06-07T14:21:46.295Z', true],
-                ['002013-06-07T14:21:46.295Z', false, null, {
+                ['+002013-06-07T14:21:46.295Z', true, new Date('+002013-06-07T14:21:46.295Z')],
+                ['-002013-06-07T14:21:46.295Z', true, new Date('-002013-06-07T14:21:46.295Z')],
+                ['002013-06-07T14:21:46.295Z', false, {
                     message: '"value" must be in ISO 8601 date format',
-                    details: [{
-                        message: '"value" must be in ISO 8601 date format',
-                        path: [],
-                        type: 'date.format',
-                        context: { label: 'value', value: '002013-06-07T14:21:46.295Z', format: 'iso' }
-                    }]
+                    path: [],
+                    type: 'date.format',
+                    context: { label: 'value', value: '002013-06-07T14:21:46.295Z', format: 'iso' }
                 }]
             ]);
         });
@@ -90,26 +79,20 @@ describe('date', () => {
         it('errors without convert enabled', () => {
 
             Helper.validate(custom.date().format('YYYY-MM-DD').options({ convert: false }), [
-                ['2000-01-01', false, null, {
+                ['2000-01-01', false, {
                     message: '"value" must be a valid date',
-                    details: [{
-                        message: '"value" must be a valid date',
-                        path: [],
-                        type: 'date.base',
-                        context: { value: '2000-01-01', label: 'value' }
-                    }]
+                    path: [],
+                    type: 'date.base',
+                    context: { value: '2000-01-01', label: 'value' }
                 }]
             ]);
 
             Helper.validate(custom.date().options({ convert: false }), [
-                ['2000-01-01', false, null, {
+                ['2000-01-01', false, {
                     message: '"value" must be a valid date',
-                    details: [{
-                        message: '"value" must be a valid date',
-                        path: [],
-                        type: 'date.base',
-                        context: { value: '2000-01-01', label: 'value' }
-                    }]
+                    path: [],
+                    type: 'date.base',
+                    context: { value: '2000-01-01', label: 'value' }
                 }]
             ]);
         });
@@ -117,31 +100,41 @@ describe('date', () => {
         it('validates custom format', () => {
 
             Helper.validate(custom.date().format('DD#YYYY$MM'), [
-                ['07#2013$06', true],
-                ['2013-06-07', false, null, {
+                ['07#2013$06', true, Moment('07#2013$06', 'DD#YYYY$MM', true).toDate()],
+                ['2013-06-07', false, {
                     message: '"value" must be in DD#YYYY$MM format',
-                    details: [{
-                        message: '"value" must be in DD#YYYY$MM format',
-                        path: [],
-                        type: 'date.format',
-                        context: { value: '2013-06-07', label: 'value', format: 'DD#YYYY$MM' }
-                    }]
+                    path: [],
+                    type: 'date.format',
+                    context: { value: '2013-06-07', label: 'value', format: 'DD#YYYY$MM' }
                 }]
+            ]);
+        });
+
+        it('enforces format', () => {
+
+            const schema = custom.date().format('YYYY-MM-DD');
+
+            Helper.validate(schema, [
+                ['1', false, '"value" must be in YYYY-MM-DD format'],
+                ['10', false, '"value" must be in YYYY-MM-DD format'],
+                ['1000', false, '"value" must be in YYYY-MM-DD format'],
+                ['100x', false, '"value" must be in YYYY-MM-DD format'],
+                ['1-1', false, '"value" must be in YYYY-MM-DD format']
             ]);
         });
 
         it('validates several custom formats', () => {
 
-            Helper.validate(custom.date().format(['DD#YYYY$MM', 'YY|DD|MM']), [
-                ['13|07|06', true],
-                ['2013-06-07', false, null, {
+            const schema = custom.date()
+                .format(['DD#YYYY$MM', 'YY|DD|MM']);
+
+            Helper.validate(schema, [
+                ['13|07|06', true, Moment('13|07|06', 'YY|DD|MM', true).toDate()],
+                ['2013-06-07', false, {
                     message: '"value" must be in [DD#YYYY$MM, YY|DD|MM] format',
-                    details: [{
-                        message: '"value" must be in [DD#YYYY$MM, YY|DD|MM] format',
-                        path: [],
-                        type: 'date.format',
-                        context: { value: '2013-06-07', label: 'value', format: ['DD#YYYY$MM', 'YY|DD|MM'] }
-                    }]
+                    path: [],
+                    type: 'date.format',
+                    context: { value: '2013-06-07', label: 'value', format: ['DD#YYYY$MM', 'YY|DD|MM'] }
                 }]
             ]);
         });
@@ -149,7 +142,7 @@ describe('date', () => {
         it('supports utc mode', () => {
 
             Helper.validate(custom.date().utc().format('YYYY-MM-DD'), [
-                ['2018-01-01', true, null, new Date('2018-01-01:00:00:00.000Z')]
+                ['2018-01-01', true, new Date('2018-01-01:00:00:00.000Z')]
             ]);
         });
 
@@ -168,32 +161,23 @@ describe('date', () => {
         it('fails with overflow dates', () => {
 
             Helper.validate(custom.date().format('YYYY-MM-DD'), [
-                ['1999-02-31', false, null, {
+                ['1999-02-31', false, {
                     message: '"value" must be in YYYY-MM-DD format',
-                    details: [{
-                        message: '"value" must be in YYYY-MM-DD format',
-                        path: [],
-                        type: 'date.format',
-                        context: { value: '1999-02-31', label: 'value', format: 'YYYY-MM-DD' }
-                    }]
+                    path: [],
+                    type: 'date.format',
+                    context: { value: '1999-02-31', label: 'value', format: 'YYYY-MM-DD' }
                 }],
-                ['2005-13-01', false, null, {
+                ['2005-13-01', false, {
                     message: '"value" must be in YYYY-MM-DD format',
-                    details: [{
-                        message: '"value" must be in YYYY-MM-DD format',
-                        path: [],
-                        type: 'date.format',
-                        context: { value: '2005-13-01', label: 'value', format: 'YYYY-MM-DD' }
-                    }]
+                    path: [],
+                    type: 'date.format',
+                    context: { value: '2005-13-01', label: 'value', format: 'YYYY-MM-DD' }
                 }],
-                ['2010-01-32', false, null, {
+                ['2010-01-32', false, {
                     message: '"value" must be in YYYY-MM-DD format',
-                    details: [{
-                        message: '"value" must be in YYYY-MM-DD format',
-                        path: [],
-                        type: 'date.format',
-                        context: { value: '2010-01-32', label: 'value', format: 'YYYY-MM-DD' }
-                    }]
+                    path: [],
+                    type: 'date.format',
+                    context: { value: '2010-01-32', label: 'value', format: 'YYYY-MM-DD' }
                 }]
             ]);
         });

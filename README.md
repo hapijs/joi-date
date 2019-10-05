@@ -2,23 +2,15 @@
 
 # @hapi/joi-date
 
-Extensions for advance date rules.
+#### Extensions for advance date rules.
 
-[![Build Status](https://secure.travis-ci.org/hapijs/joi-date.svg?branch=master)](http://travis-ci.org/hapijs/joi-date)
+**joi-date** is part of the **hapi** ecosystem and was designed to work seamlessly with the [hapi web framework](https://hapi.dev) and its other components (but works great on its own or with other frameworks). If you are using a different web framework and find this module useful, check out [hapi](https://hapi.dev) – they work even better together.
 
-# Compatibility
+### Visit the [hapi.dev](https://hapi.dev) Developer Portal for tutorials, documentation, and support
 
-This version requires **joi** v16 or newer. For previous versions of **joi** use version 1.x of this module.
+## Useful resources
 
-# Usage
-
-```js
-const Joi = require('@hapi/joi')
-    .extend(require('@hapi/joi-date'));
-
-const schema = Joi.date().format('YYYY-MM-DD').utc();
-```
-
-# API
-
-See the [API Reference](https://github.com/hapijs/joi-date/blob/master/API.md).
+- [Documentation and API](https://hapi.dev/family/joi-date/)
+- [Versions status](https://hapi.dev/resources/status/#joi-date)
+- [Project policies](https://hapi.dev/policies/)
+- [Free and commercial support options](https://hapi.dev/support/)
