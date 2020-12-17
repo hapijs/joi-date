@@ -1,13 +1,12 @@
-# @sideway/joi-date
+# @joi/date
 
 #### Extensions for advance date rules.
 
-### Visit the [hapi.dev](https://hapi.dev) Developer Portal for tutorials, documentation, and support
+### Visit the [joi.dev](https://joi.dev) Developer Portal for tutorials, documentation, and support
 
 ## Useful resources
 
-- [Documentation and API](https://hapi.dev/family/joi-date/)
-- [Versions status](https://hapi.dev/resources/status/#joi-date)
-- [Changelog](https://hapi.dev/family/joi-date/changelog/)
-- [Project policies](https://hapi.dev/policies/)
-- [Free and commercial support options](https://hapi.dev/support/)
+- [Documentation and API](https://joi.dev/module/joi-date/)
+- [Versions status](https://joi.dev/resources/status/#joi-date)
+- [Changelog](https://joi.dev/module/joi-date/changelog/)
+- [Project policies](https://joi.dev/policies/)

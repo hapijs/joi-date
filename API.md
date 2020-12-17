@@ -1,12 +1,12 @@
 ## Compatibility
 
-This version requires **joi** v16 or newer. For previous versions of **joi** use version 1.x of this module.
+This version requires **joi** v17 or newer.
 
 ## Usage
 
 ```js
-const Joi = require('@hapi/joi')
-    .extend(require('@hapi/joi-date'));
+const Joi = require('joi')
+    .extend(require('@joi/date'));
 
 const schema = Joi.date().format('YYYY-MM-DD').utc();
 ```
