@@ -21,6 +21,9 @@ Specifies the allowed date format:
 ```js
 const schema = Joi.date().format(['YYYY/MM/DD', 'DD-MM-YYYY']);
 ```
+```js
+const schema = Joi.date().format('YYYY-MM-DD HH:mm');
+```
 
 ### `date.utc()`
 
