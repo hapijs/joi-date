@@ -1,7 +1,7 @@
 'use strict';
 
 const Code = require('@hapi/code');
-const Joi = require('@hapi/joi');
+const Joi = require('joi');
 const JoiDate = require('..');
 const Lab = require('@hapi/lab');
 const Moment = require('moment');
