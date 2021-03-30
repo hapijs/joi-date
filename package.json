@@ -4,6 +4,7 @@
   "version": "2.0.1",
   "repository": "git://github.com/sideway/joi-date",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "keywords": [
     "schema",
     "validation",
@@ -17,11 +18,12 @@
   },
   "devDependencies": {
     "@hapi/code": "8.x.x",
-    "@hapi/joi": "17.x.x",
-    "@hapi/lab": "24.x.x"
+    "@hapi/lab": "24.x.x",
+    "joi": "^17.2.0",
+    "typescript": "4.0.x"
   },
   "scripts": {
-    "test": "lab -t 100 -a @hapi/code -L",
+    "test": "lab -t 100 -a @hapi/code -L -Y",
     "test-cov-html": "lab -r html -o coverage.html -a @hapi/code"
   },
   "license": "BSD-3-Clause"
