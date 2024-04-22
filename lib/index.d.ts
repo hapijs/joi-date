@@ -7,7 +7,7 @@ declare module 'joi' {
 
         /**
          * Specifies the allowed date format.
-         * 
+         *
          * @param format - string or array of strings that follow the moment.js format.
          */
         format(format: string | string[]): this;
@@ -24,5 +24,9 @@ interface DateExtension extends Extension {
     base: DateSchema;
 }
 
-declare const JoiDateFactory: (joi: Root) => DateExtension;
-export default JoiDateFactory;
+interface JoiDateFactory {
+    (joi: Root): DateExtension;
+    default: (joi: Root) => DateExtension;
+}
+declare const factory: JoiDateFactory;
+export = factory;
