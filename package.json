@@ -1,7 +1,7 @@
 {
   "name": "@joi/date",
   "description": "Joi extension for dates",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "repository": "git://github.com/sideway/joi-date",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
