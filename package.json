@@ -9,12 +9,11 @@
     "schema",
     "validation",
     "date",
-    "moment",
     "joi",
     "extension"
   ],
   "dependencies": {
-    "moment": "2.x.x"
+    "date-fns": "2.x.x"
   },
   "devDependencies": {
     "@hapi/code": "8.x.x",

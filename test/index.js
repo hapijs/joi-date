@@ -4,7 +4,6 @@ const Code = require('@hapi/code');
 const Joi = require('joi');
 const JoiDate = require('..');
 const Lab = require('@hapi/lab');
-const Moment = require('moment');
 
 const Helper = require('./helper');
 
@@ -24,7 +23,7 @@ describe('date', () => {
 
         it('validates an empty date', () => {
 
-            const schema = custom.date().format('YYYY-MM-DD');
+            const schema = custom.date().format('yyyy-MM-dd');
             expect(schema.validate(undefined).error).to.not.exist();
         });
 
@@ -44,7 +43,7 @@ describe('date', () => {
                 }]
             ]);
 
-            Helper.validate(custom.date().format('YYYY-MM-DD'), [
+            Helper.validate(custom.date().format('yyyy-MM-dd'), [
                 [now, true, new Date(now)],
                 [date, true],
                 [new Date(NaN), false, {
@@ -54,10 +53,10 @@ describe('date', () => {
                     context: { value: new Date(NaN), label: 'value' }
                 }],
                 ['xxx', false, {
-                    message: '"value" must be in YYYY-MM-DD format',
+                    message: '"value" must be in yyyy-MM-dd format',
                     path: [],
                     type: 'date.format',
-                    context: { value: 'xxx', label: 'value', format: 'YYYY-MM-DD' }
+                    context: { value: 'xxx', label: 'value', format: 'yyyy-MM-dd' }
                 }]
             ]);
         });
@@ -78,7 +77,7 @@ describe('date', () => {
 
         it('errors without convert enabled', () => {
 
-            Helper.validate(custom.date().format('YYYY-MM-DD').options({ convert: false }), [
+            Helper.validate(custom.date().format('yyyy-MM-dd').options({ convert: false }), [
                 ['2000-01-01', false, {
                     message: '"value" must be a valid date',
                     path: [],
@@ -99,92 +98,70 @@ describe('date', () => {
 
         it('validates custom format', () => {
 
-            Helper.validate(custom.date().format('DD#YYYY$MM'), [
-                ['07#2013$06', true, Moment('07#2013$06', 'DD#YYYY$MM', true).toDate()],
+            const schema = custom.date()
+                .format('dd$yy#MM');
+
+            Helper.validate(schema, [
+                ['13$07#06', true, new Date(2007, 5, 13)],
                 ['2013-06-07', false, {
-                    message: '"value" must be in DD#YYYY$MM format',
+                    message: '"value" must be in dd$yy#MM format',
                     path: [],
                     type: 'date.format',
-                    context: { value: '2013-06-07', label: 'value', format: 'DD#YYYY$MM' }
+                    context: { value: '2013-06-07', label: 'value', format: 'dd$yy#MM' }
                 }]
             ]);
         });
-
         it('enforces format', () => {
 
-            const schema = custom.date().format('YYYY-MM-DD');
+            const schema = custom.date().format('yyyy-MM-dd');
 
             Helper.validate(schema, [
-                ['1', false, '"value" must be in YYYY-MM-DD format'],
-                ['10', false, '"value" must be in YYYY-MM-DD format'],
-                ['1000', false, '"value" must be in YYYY-MM-DD format'],
-                ['100x', false, '"value" must be in YYYY-MM-DD format'],
-                ['1-1', false, '"value" must be in YYYY-MM-DD format']
-            ]);
-        });
-
-        it('validates several custom formats', () => {
-
-            const schema = custom.date()
-                .format(['DD#YYYY$MM', 'YY|DD|MM']);
-
-            Helper.validate(schema, [
-                ['13|07|06', true, Moment('13|07|06', 'YY|DD|MM', true).toDate()],
-                ['2013-06-07', false, {
-                    message: '"value" must be in [DD#YYYY$MM, YY|DD|MM] format',
-                    path: [],
-                    type: 'date.format',
-                    context: { value: '2013-06-07', label: 'value', format: ['DD#YYYY$MM', 'YY|DD|MM'] }
-                }]
-            ]);
-        });
-
-        it('supports utc mode', () => {
-
-            Helper.validate(custom.date().utc().format('YYYY-MM-DD'), [
-                ['2018-01-01', true, new Date('2018-01-01:00:00:00.000Z')]
+                ['1', false, '"value" must be in yyyy-MM-dd format'],
+                ['10', false, '"value" must be in yyyy-MM-dd format'],
+                ['1000', false, '"value" must be in yyyy-MM-dd format'],
+                ['100x', false, '"value" must be in yyyy-MM-dd format'],
+                ['1-1', false, '"value" must be in yyyy-MM-dd format']
             ]);
         });
 
         it('fails with bad formats', () => {
 
-            expect(() => custom.date().format(true)).to.throw('Invalid format "value" must be one of [string, array]');
-            expect(() => custom.date().format([true])).to.throw('Invalid format "[0]" must be a string');
+            expect(() => custom.date().format(true)).to.throw('Invalid format "value" must be a string');
         });
 
         it('fails without convert', () => {
 
-            const schema = custom.date().format('YYYY-MM-DD');
+            const schema = custom.date().format('yyyy-MM-dd');
             expect(schema.validate('foo', { convert: false }).error).to.be.an.error('"value" must be a valid date');
         });
 
         it('fails with overflow dates', () => {
 
-            Helper.validate(custom.date().format('YYYY-MM-DD'), [
+            Helper.validate(custom.date().format('yyyy-MM-dd'), [
                 ['1999-02-31', false, {
-                    message: '"value" must be in YYYY-MM-DD format',
+                    message: '"value" must be in yyyy-MM-dd format',
                     path: [],
                     type: 'date.format',
-                    context: { value: '1999-02-31', label: 'value', format: 'YYYY-MM-DD' }
+                    context: { value: '1999-02-31', label: 'value', format: 'yyyy-MM-dd' }
                 }],
                 ['2005-13-01', false, {
-                    message: '"value" must be in YYYY-MM-DD format',
+                    message: '"value" must be in yyyy-MM-dd format',
                     path: [],
                     type: 'date.format',
-                    context: { value: '2005-13-01', label: 'value', format: 'YYYY-MM-DD' }
+                    context: { value: '2005-13-01', label: 'value', format: 'yyyy-MM-dd' }
                 }],
                 ['2010-01-32', false, {
-                    message: '"value" must be in YYYY-MM-DD format',
+                    message: '"value" must be in yyyy-MM-dd format',
                     path: [],
                     type: 'date.format',
-                    context: { value: '2010-01-32', label: 'value', format: 'YYYY-MM-DD' }
+                    context: { value: '2010-01-32', label: 'value', format: 'yyyy-MM-dd' }
                 }]
             ]);
         });
 
         it('should support .allow()', () => {
 
-            const schema = custom.date().format('YYYY-MM-DD').allow('epoch');
+            const schema = custom.date().format('yyyy-MM-dd').allow('epoch');
             expect(schema.validate('epoch')).to.equal({ value: 'epoch' });
         });
 
@@ -192,26 +169,15 @@ describe('date', () => {
 
             it('describes custom formats', () => {
 
-                const schema = custom.date().format(['DD#YYYY$MM', 'YY|DD|MM']);
+                const schema = custom.date().format('dd#yyyy$MM');
                 expect(schema.describe()).to.equal({
                     type: 'date',
                     flags: {
-                        format: ['DD#YYYY$MM', 'YY|DD|MM']
+                        format: 'dd#yyyy$MM'
                     }
                 });
             });
 
-            it('describes utc mode', () => {
-
-                const schema = custom.date().utc().format(['DD#YYYY$MM', 'YY|DD|MM']);
-                expect(schema.describe()).to.equal({
-                    type: 'date',
-                    flags: {
-                        format: ['DD#YYYY$MM', 'YY|DD|MM'],
-                        utc: true
-                    }
-                });
-            });
         });
     });
 });
