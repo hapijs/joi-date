@@ -1,31 +1,60 @@
 {
-  "name": "@joi/date",
-  "description": "Joi extension for dates",
-  "version": "2.1.1",
-  "repository": "git://github.com/sideway/joi-date",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
-  "keywords": [
-    "schema",
-    "validation",
-    "date",
-    "moment",
-    "joi",
-    "extension"
-  ],
-  "dependencies": {
-    "moment": "2.x.x"
-  },
-  "devDependencies": {
-    "@hapi/code": "8.x.x",
-    "@hapi/lab": "24.x.x",
-    "@types/node": "^14.18.63",
-    "joi": "^17.2.0",
-    "typescript": "4.0.x"
-  },
-  "scripts": {
-    "test": "lab -t 100 -a @hapi/code -L -Y",
-    "test-cov-html": "lab -r html -o coverage.html -a @hapi/code"
-  },
-  "license": "BSD-3-Clause"
+    "name": "@joi/date",
+    "version": "2.1.1",
+    "description": "Joi extension for dates",
+    "keywords": [
+        "date",
+        "dayjs",
+        "extension",
+        "joi",
+        "schema",
+        "validation"
+    ],
+    "license": "BSD-3-Clause",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/hapijs/joi-date.git"
+    },
+    "files": [
+        "dist",
+        "API.md"
+    ],
+    "type": "module",
+    "types": "./dist/index.d.mts",
+    "exports": {
+        ".": "./dist/index.mjs",
+        "./package.json": "./package.json"
+    },
+    "scripts": {
+        "prepare": "node --run build",
+        "test": "vitest run --coverage",
+        "typecheck": "tsc --noEmit",
+        "lint": "oxlint",
+        "lint:fix": "oxlint --fix",
+        "fmt": "oxfmt --check",
+        "fmt:fix": "oxfmt",
+        "check": "npm run lint && npm run fmt && npm run typecheck && npm test",
+        "build": "tsdown"
+    },
+    "dependencies": {
+        "dayjs": "^1.11.21"
+    },
+    "devDependencies": {
+        "@hapi/hoek": "^11.0.7",
+        "@hapi/oxc-plugin": "^1.0.2",
+        "@types/node": "^22.20.1",
+        "@vitest/coverage-v8": "^4.1.10",
+        "joi": "^18.2.3",
+        "oxfmt": "^0.61.0",
+        "oxlint": "^1.76.0",
+        "tsdown": "^0.22.14",
+        "typescript": "^6.0.3",
+        "vitest": "^4.1.10"
+    },
+    "peerDependencies": {
+        "joi": ">=18"
+    },
+    "engines": {
+        "node": ">=22"
+    }
 }

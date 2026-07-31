@@ -1,15 +1,15 @@
 name: ci
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-  workflow_dispatch:
+    push:
+        branches:
+            - master
+    pull_request:
+    workflow_dispatch:
 
 permissions:
-  contents: read #  for actions/checkout
+    contents: read #  for actions/checkout
 
 jobs:
-  test:
-    uses: hapijs/.github/.github/workflows/ci-module.yml@master
+    test:
+        uses: hapijs/.github/.github/workflows/ci-module.yml@min-node-22-hapi-21
