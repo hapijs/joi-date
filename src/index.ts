@@ -1,6 +1,6 @@
-import Dayjs from 'dayjs';
-import CustomParseFormat from 'dayjs/plugin/customParseFormat.js';
-import Utc from 'dayjs/plugin/utc.js';
+import Dayjs from '@joi/~dayjs';
+import CustomParseFormat from '@joi/~dayjs/plugin/customParseFormat.js';
+import Utc from '@joi/~dayjs/plugin/utc.js';
 
 import type { CoerceObject, DateSchema, Extension, Root } from 'joi';
 

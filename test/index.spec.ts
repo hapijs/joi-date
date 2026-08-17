@@ -274,4 +274,32 @@ describe('date', () => {
             });
         });
     });
+
+    describe('dayjs integration', async () => {
+        const dayjs = (await import('dayjs')).default;
+        const customParseFormat = (await import('dayjs/plugin/customParseFormat.js')).default;
+
+        it('has not been extended', () => {
+            expect(dayjs('01-01-01 +00:00', 'YY-MM-DD Z').isValid()).to.be.false;
+        });
+
+        it('ignores installed extensions', () => {
+            const checkIgnored = () => {
+                Helper.validate(custom.date().format({ format: 'YY-MM-DD Z', utc: true }), [
+                    ['01-01-01 +00:00', true, new Date('2001-01-01T00:00:00.000Z')],
+                ]);
+            };
+
+            checkIgnored();
+
+            dayjs.extend(customParseFormat, {
+                parseTwoDigitYear: (yearString) => {
+                    return 1000 + parseInt(yearString);
+                },
+            });
+
+            expect(dayjs('01-01-01 +00:00', 'YY-MM-DD Z').toDate()).to.deep.equal(new Date('1001-01-01T00:00:00.000Z'));
+            checkIgnored();
+        });
+    });
 });
