@@ -37,13 +37,14 @@
         "build": "tsdown"
     },
     "dependencies": {
-        "dayjs": "^1.11.21"
+        "@joi/~dayjs": "npm:dayjs@^1.11.22"
     },
     "devDependencies": {
         "@hapi/hoek": "^11.0.7",
         "@hapi/oxc-plugin": "^1.0.2",
         "@types/node": "^22.20.1",
         "@vitest/coverage-v8": "^4.1.10",
+        "dayjs": "^1.11.22",
         "joi": "^18.2.3",
         "oxfmt": "^0.61.0",
         "oxlint": "^1.76.0",
